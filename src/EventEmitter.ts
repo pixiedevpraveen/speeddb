@@ -1,5 +1,5 @@
 import { hasOwn, isArray } from "./utils"
-import { DBError } from "./error"
+import { SDBError } from "./error"
 import { remove } from "@antfu/utils";
 
 type EventHandlers<E extends string> = Record<E, any>
@@ -11,7 +11,7 @@ export class EventEmitter<E extends string, EventCol extends EventHandlers<E>> {
 
     constructor(events: readonly E[]) {
         this.events = {} as typeof this.events
-        if (!isArray<E>(events)) throw new DBError('Value', 'Events must be string array')
+        if (!isArray<E>(events)) throw new SDBError('Value', 'Events must be string array')
 
         events.forEach(e => {
             this.events[e] = []
@@ -24,7 +24,7 @@ export class EventEmitter<E extends string, EventCol extends EventHandlers<E>> {
         event.forEach(ev => {
             // does have the property
             if (!hasOwn(this.events, ev))
-                throw new DBError("Event", "Event not available")
+                throw new SDBError("Event", "Event not available")
 
             this.events[ev].push(fn as any)
         })
